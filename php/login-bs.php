@@ -2,8 +2,8 @@
 include "/lib/mainLib.php";
 startSessionIfNot();
 
-if (!isLoggedIn) {
-    header('Location: login-bs.php');
+if (isLoggedIn()) {
+    header('Location: addIncome-bs.php');
     exit();
 }
 
