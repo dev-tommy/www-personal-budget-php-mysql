@@ -2,7 +2,7 @@
 include "/lib/mainLib.php";
 startSessionIfNot();
 
-if (isLoggedIn) {
+if (!isLoggedIn) {
     header('Location: login-bs.php');
     exit();
 }
