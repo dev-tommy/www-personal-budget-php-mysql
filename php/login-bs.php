@@ -36,8 +36,14 @@ if (isLoggedIn()) {
             <a class="navbar-brand" href="login-bs.html"><img src="img/logo.png" width="30" height="30" class="d-inline-block mr-1 align-bottom" alt="">
                 <span class="h3 text-warning">Budżet osobisty </span>
             </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="Przełącznik nawigacji">
-                <span class="navbar-toggler-icon"></span>
+            <?php
+            if (isset($_SESSION['incorrectLogin'])) {
+                echo '<button style="border-width:3px; border-color: rgba(228, 11, 31, 0.94);}" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="Przełącznik nawigacji">';
+            } else {
+                echo '<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="Przełącznik nawigacji">';
+            }
+            ?>
+            <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="mainmenu">
@@ -56,8 +62,15 @@ if (isLoggedIn()) {
                 </ul>
 
                 <form class="form-inline" action="../php/login.php" method="POST">
-                    <input class="form-control form-control mr-1 my-1" type="text" placeholder="Login" required>
-                    <input class="form-control form-control mr-1 my-1" type="password" placeholder="Hasło" minlength="8" maxlength="64" required>
+                    <?php
+                    if (isset($_SESSION['incorrectLogin'])) {
+                        echo '<input style="border-width:3px;" class="form-control border-danger mr-1 my-1" name="login" type="text" placeholder="błędny login" required>';
+                        echo '<input style="border-width:3px;" class="form-control border-danger mr-1 my-1" name="password" type="password" placeholder="lub błędne hasło" minlength="8" maxlength="64" required>';
+                    } else {
+                        echo '<input class="form-control mr-1 my-1" name="login" type="text" placeholder="Nick lub email" required>';
+                        echo '<input class="form-control mr-1 my-1" name="password" type="password" placeholder="Hasło" minlength="8" maxlength="64" required>';
+                    }
+                    ?>
                     <div class="btn-group">
                         <button class="btn btn-success btn-sm px-2 my-1" type="submit">
                             <i class="material-icons">person</i>
