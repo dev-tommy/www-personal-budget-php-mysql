@@ -18,5 +18,13 @@ function isLoggedIn()
     }
 }
 
+function showFooter()
+{
+    echo '<footer class="text-center fixed-bottom mb-0 p-1 text-white bg-custom">';
+    echo ' © 2019-';
+    echo date("Y").": Tomasz Frydrychowicz";
+    echo '</footer>';
+}
+
 
 ?>
