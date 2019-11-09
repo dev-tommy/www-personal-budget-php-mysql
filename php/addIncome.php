@@ -89,6 +89,45 @@ else
     $comment = null;
 }
 
+require_once "connectDB.php";
+mysqli_report(MYSQLI_REPORT_STRICT);
+$userId = $_SESSION['userId'];
 
+if ($incomeCorrect)
+{
+    try
+    {
+        $personalBudgetDB = new mysqli($host, $db_user, $db_password, $db_name);
+        if ($personalBudgetDB->connect_errno != 0)
+        {
+            throw new Exception(mysqli_connect_errno());
+        }
+        else
+        {
+            if ($personalBudgetDB->query("INSERT INTO incomes VALUES (NULL, '$userId' ,'$category','$amount','$date','$comment')"))
+            {
+                echo "Dodano !";
+                $_SESSION['newIncomeAdded'] = true;
+                header('Location: addIncome-bs.php');
+                exit();
+
+            }
+            else
+            {
+                echo "Nie dodano";
+            }
+            $personalBudgetDB->close();
+        }
+
+    }
+    catch (Exception $e)
+    {
+        echo 'Błąd serwera!';
+    }
+}
+else
+{
+    echo "Nie dodano";
+}
 
 header('Location: addIncome-bs.php');
