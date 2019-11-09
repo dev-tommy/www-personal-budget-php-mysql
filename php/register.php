@@ -45,6 +45,69 @@ if (isset($_POST['nickName']) && isset($_POST['email']) && isset($_POST['passwor
 
     $hashPwd = password_hash($pwd, PASSWORD_DEFAULT);
 
+    require_once "connectDB.php";
+    mysqli_report(MYSQLI_REPORT_STRICT);
+
+    if ($registerDataCorrect) {
+        try {
+            $personalBudgetDB = new mysqli($host, $db_user, $db_password, $db_name);
+            if ($personalBudgetDB->connect_errno != 0) {
+                throw new Exception(mysqli_connect_errno());
+            } else {
+
+                $result = $personalBudgetDB->query("SELECT id FROM users WHERE email='$sanitizedEmail'");
+                if (!$result) throw new Exception($personalBudgetDB->error);
+
+                $emailExist = $result->num_rows != 0;
+                if ($emailExist) {
+                    $registerDataCorrect = false;
+                    $_SESSION['e_email'] = "E-mail jest już przyspisany do innego konta!";
+                }
+
+                $result = $personalBudgetDB->query("SELECT id FROM users WHERE username='$nick'");
+                if (!$result) throw new Exception($personalBudgetDB->error);
+
+                $nickExist = $result->num_rows != 0;
+                if ($nickExist) {
+                    $registerDataCorrect = false;
+                    $_SESSION['e_nick'] = "Nick jest już przyspisany do innego konta!";
+                }
+
+                if ($registerDataCorrect) {
+                    if ($personalBudgetDB->query("INSERT INTO users VALUES (NULL, '$nick','$hashPwd','$sanitizedEmail')")) {
+                        $_SESSION['newUserRegistered'] = true;
+
+                        $result = $personalBudgetDB->query("SELECT id FROM users WHERE username='$nick'");
+                        if (!$result) throw new Exception($personalBudgetDB->error);
+
+                        if ($result->num_rows > 0) {
+                            $row = $result->fetch_assoc();
+                            $newUserId = $row['id'];
+
+                            $personalBudgetDB->query("CREATE TABLE incomes_category_assigned_to_userid_$newUserId LIKE incomes_category_default");
+                            $personalBudgetDB->query("INSERT INTO incomes_category_assigned_to_userid_$newUserId SELECT * FROM incomes_category_default");
+
+                            $personalBudgetDB->query("CREATE TABLE expenses_category_assigned_to_userid_$newUserId LIKE expenses_category_default");
+                            $personalBudgetDB->query("INSERT INTO expenses_category_assigned_to_userid_$newUserId SELECT * FROM expenses_category_default");
+
+                            $personalBudgetDB->query("CREATE TABLE payment_methods_assigned_to_userid_$newUserId LIKE payment_methods_default");
+                            $personalBudgetDB->query("INSERT INTO payment_methods_assigned_to_userid_$newUserId SELECT * FROM payment_methods_default");
+                        } else {
+                            echo "Błąd odczytu id nowego użytkownika";
+                            exit();
+                        }
+                    } else {
+                        echo "Błąd dodawania użytkownika";
+                        exit();
+                    }
+                }
+                $personalBudgetDB->close();
+            }
+        } catch (Exception $e) {
+            echo 'Błąd serwera!';
+            exit();
+        }
+    }
 
 }
 
