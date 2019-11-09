@@ -32,7 +32,7 @@ if (!isLoggedIn()) {
 <body onload="setActualDate();">
     <header>
         <nav class="navbar navbar-dark bg-custom navbar-expand-lg fixed-top">
-            <a class="navbar-brand" href="login-bs.html"><img src="img/logo.png" width="30" height="30" class="d-inline-block mr-1 align-bottom" alt="">
+            <a class="navbar-brand" href="../index.php"><img src="../img/logo.png" width="36" height="36" class="d-inline-block mr-1 align-bottom" alt="">
                 <span class="h3 text-warning">Budżet osobisty </span>
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainmenu">
@@ -46,15 +46,15 @@ if (!isLoggedIn()) {
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link h4" href="addExpense-bs.html"> Dodaj wydatek </a>
+                        <a class="nav-link h4" href="addExpense-bs.php"> Dodaj wydatek </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link h4" href="viewBalance-bs.html"> Przeglądaj bilans </a>
+                        <a class="nav-link h4" href="viewBalance-bs.php"> Przeglądaj bilans </a>
                     </li>
                 </ul>
 
-                <form class="form-inline" action="login-bs.html">
+                <form class="form-inline" action="logout.php">
                     <div class="btn-group">
                         <button class="btn btn-danger btn-sm px-2 my-1" type="submit">
                             <i class="material-icons">exit_to_app</i>
