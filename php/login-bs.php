@@ -89,6 +89,7 @@ if (isLoggedIn()) {
         <div class="container move-under-navbar">
             <div class="row">
                 <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+                    <?php if (!isset($_SESSION['newUserRegistered']) || ($_SESSION['newUserRegistered']) == false) : ?>
 
                         <form action="register.php" method="POST">
                             <div class="card shadow-lg mb-5 bg-white rounded">
@@ -171,7 +172,21 @@ if (isLoggedIn()) {
                                 </div>
                             </div>
                         </form>
-              </div>
+                    <?php else : ?>
+                        <div class="card shadow-lg mb-5 bg-white rounded">
+                            <div class="card-header bg-info card-topic text-center"> Gratulacje !!! </div>
+                            <div class="card-body text-center">
+                                <i class="material-icons btn btn-success btn-sm px-2 my-2">done</i>
+                                <h4>Rejestracja przebiegła poprawnie.<br /> Teraz możesz się zalogować.</h4>
+                            </div>
+
+                            <div class="card-footer bg-info text-white "> </div>
+                        </div>
+                    <?php
+                    endif;
+                    unset($_SESSION['newUserRegistered']);
+                    ?>
+                </div>
             </div>
         </div>
     </main>
