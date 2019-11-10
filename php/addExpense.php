@@ -104,4 +104,46 @@ else
     $comment = null;
 }
 
+require_once "connectDB.php";
+mysqli_report(MYSQLI_REPORT_STRICT);
+$userId = $_SESSION['userId'];
 
+if ($expenseCorrect)
+{
+    try
+    {
+        $personalBudgetDB = new mysqli($host, $db_user, $db_password, $db_name);
+        if ($personalBudgetDB->connect_errno != 0)
+        {
+            throw new Exception(mysqli_connect_errno());
+        }
+        else
+        {
+            if ($personalBudgetDB->query("INSERT INTO expenses VALUES (NULL, '$userId' ,'$category','$payment','$amount','$date','$comment')"))
+            {
+                echo "Dodano !";
+                $_SESSION['newExpenseAdded'] = true;
+                header('Location: addExpense-bs.php');
+                exit();
+            }
+            else
+            {
+                echo "Nie dodano";
+            }
+            $personalBudgetDB->close();
+        }
+
+    }
+    catch (Exception $e)
+    {
+        echo 'Błąd serwera!';
+    }
+}
+else
+{
+    echo "Nie dodano";
+}
+
+header('Location: addExpense-bs.php');
+
+?>
