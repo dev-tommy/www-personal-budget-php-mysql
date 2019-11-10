@@ -72,105 +72,133 @@ if (!isLoggedIn()) {
         <div class="container move-under-navbar">
             <div class="row">
                 <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-                    <form action="addExpense.php" method="POST">
-                        <div class="card shadow-lg mb-5 bg-white rounded">
-                            <div class="card-header bg-info card-topic text-center"> Dodaj wydatek </div>
-                            <div class="card-body">
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">
-                                            <i class="material-icons">attach_money</i>
-                                        </span>
+                    <?php if (!isset($_SESSION['newExpenseAdded']) || ($_SESSION['newExpenseAdded']) == false) : ?>
+                        <form action="addExpense.php" method="POST">
+                            <div class="card shadow-lg mb-5 bg-white rounded">
+                                <div class="card-header bg-info card-topic text-center"> Dodaj wydatek </div>
+                                <div class="card-body">
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="material-icons">attach_money</i>
+                                            </span>
+                                        </div>
+                                        <input type="number" class="form-control" name="amount" placeholder="Kwota" step="0.01" required>
                                     </div>
-                                    <input type="number" class="form-control" name="amount" placeholder="Kwota" step="0.01" required>
+
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="material-icons">calendar_today</i>
+                                            </span>
+                                        </div>
+                                        <input type="date" id="defaultToday" class="form-control" name="date" min="2000-01-01" required>
+                                    </div>
+
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="material-icons">payment</i>
+                                            </span>
+                                        </div>
+                                        <select name="payment" class="form-control" required>
+                                            <option disabled value="" selected>Wybierz rodzaj płatności</option>
+                                            <option value=1>Gotówka</option>
+                                            <option value=2>Karta debetowa</option>
+                                            <option value=3>Karta kredytowa</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="material-icons">shop</i>
+                                            </span>
+                                        </div>
+                                        <select name="category" class="form-control" required>
+                                            <option disabled value="" selected>Wybierz kategorię</option>
+                                            <option value=1>Jedzenie</option>
+                                            <option value=2>Mieszkanie</option>
+                                            <option value=3>Transport</option>
+                                            <option value=4>Telekomunikacja</option>
+                                            <option value=5>Opieka zdrowotna</option>
+                                            <option value=6>Ubranie</option>
+                                            <option value=7>Higiena</option>
+                                            <option value=8>Dzieci</option>
+                                            <option value=9>Rozrywka</option>
+                                            <option value=10>Wycieczka</option>
+                                            <option value=11>Szkolenia</option>
+                                            <option value=12>Książki</option>
+                                            <option value=13>Oszczędności</option>
+                                            <option value=14>Na złotą jesień, czyli emeryturę</option>
+                                            <option value=15>Spłata długów</option>
+                                            <option value=16>Darowizna</option>
+                                            <option value=17>Inne wydatki</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="material-icons">comment</i>
+                                            </span>
+                                        </div>
+                                        <textarea class="form-control " name="comment" rows=4 cols=45 maxlength=180 placeholder="Komentarz (opcjonalnie):"></textarea>
+                                    </div>
                                 </div>
 
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">
-                                            <i class="material-icons">calendar_today</i>
-                                        </span>
+                                <div class="card-footer bg-info text-white">
+                                    <div class="row">
+                                        <div class="col-md-12 text-center">
+                                            <div class="btn-group mr-5">
+                                                <button class="btn btn-success btn-sm px-2" type="submit">
+                                                    <i class="material-icons">add_circle</i>
+                                                </button>
+                                                <button class="btn btn-warning btn-sm pl-0 text-button" type="submit">
+                                                    Dodaj
+                                                </button>
+                                            </div>
+                                            <div class="btn-group ml-5">
+                                                <button class="btn btn-danger btn-sm px-2" type="submit">
+                                                    <i class="material-icons">cancel</i>
+                                                </button>
+                                                <button class="btn btn-warning btn-sm pl-0 text-button" type="submit">
+                                                    Wyczyść
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <input type="date" id="defaultToday" class="form-control" name="date" min="2000-01-01" required>
-                                </div>
 
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">
-                                            <i class="material-icons">payment</i>
-                                        </span>
-                                    </div>
-                                    <select name="payment" class="form-control" required>
-                                        <option disabled value="" selected>Wybierz rodzaj płatności</option>
-                                        <option value=1>Gotówka</option>
-                                        <option value=2>Karta debetowa</option>
-                                        <option value=3>Karta kredytowa</option>
-                                    </select>
-                                </div>
-
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">
-                                            <i class="material-icons">shop</i>
-                                        </span>
-                                    </div>
-                                    <select name="category" class="form-control" required>
-                                        <option disabled value="" selected>Wybierz kategorię</option>
-                                        <option value=1>Jedzenie</option>
-                                        <option value=2>Mieszkanie</option>
-                                        <option value=3>Transport</option>
-                                        <option value=4>Telekomunikacja</option>
-                                        <option value=5>Opieka zdrowotna</option>
-                                        <option value=6>Ubranie</option>
-                                        <option value=7>Higiena</option>
-                                        <option value=8>Dzieci</option>
-                                        <option value=9>Rozrywka</option>
-                                        <option value=10>Wycieczka</option>
-                                        <option value=11>Szkolenia</option>
-                                        <option value=12>Książki</option>
-                                        <option value=13>Oszczędności</option>
-                                        <option value=14>Na złotą jesień, czyli emeryturę</option>
-                                        <option value=15>Spłata długów</option>
-                                        <option value=16>Darowizna</option>
-                                        <option value=17>Inne wydatki</option>
-                                    </select>
-                                </div>
-
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">
-                                            <i class="material-icons">comment</i>
-                                        </span>
-                                    </div>
-                                    <textarea class="form-control " name="comment" rows=4 cols=45 maxlength=180 placeholder="Komentarz (opcjonalnie):"></textarea>
                                 </div>
                             </div>
+                        </form>
+                    <?php else : ?>
+                        <div class="card shadow-lg mb-5 bg-white rounded">
+                            <div class="card-header bg-info card-topic text-center"> Gratulacje !!! </div>
+                            <div class="card-body text-center">
+                                <i class="material-icons btn btn-success btn-sm px-2 my-2">done</i>
+                                <h4>Wydatek dodano poprawnie.</h4>
+                            </div>
 
-                            <div class="card-footer bg-info text-white">
-                                <div class="row">
+                            <div class="card-footer bg-info text-white ">
+                                <form action="addIncome-bs.php">
                                     <div class="col-md-12 text-center">
-                                        <div class="btn-group mr-5">
+                                        <div class="btn-group">
                                             <button class="btn btn-success btn-sm px-2" type="submit">
                                                 <i class="material-icons">add_circle</i>
                                             </button>
                                             <button class="btn btn-warning btn-sm pl-0 text-button" type="submit">
-                                                Dodaj
-                                            </button>
-                                        </div>
-                                        <div class="btn-group ml-5">
-                                            <button class="btn btn-danger btn-sm px-2" type="submit">
-                                                <i class="material-icons">cancel</i>
-                                            </button>
-                                            <button class="btn btn-warning btn-sm pl-0 text-button" type="submit">
-                                                Anuluj
+                                                Ok
                                             </button>
                                         </div>
                                     </div>
-                                </div>
-
+                                </form>
                             </div>
                         </div>
-                    </form>
+                    <?php
+                    endif;
+                    unset($_SESSION['newExpenseAdded']);
+                    ?>
                 </div>
             </div>
         </div>
