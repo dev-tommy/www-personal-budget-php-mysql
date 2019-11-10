@@ -176,9 +176,7 @@ if (!isLoggedIn()) {
         </div>
     </main>
 
-    <footer class="text-center fixed-bottom mb-0 p-1 text-white bg-custom">
-        © 2019 Copyright: Tomasz Frydrychowicz
-    </footer>
+    <?php showFooter() ?>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
