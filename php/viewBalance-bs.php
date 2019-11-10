@@ -1,3 +1,13 @@
+<?php
+include_once "./lib/mainLib.php";
+startSessionIfNot();
+
+if (!isLoggedIn()) {
+    header('Location: login-bs.php');
+    exit();
+}
+
+?>
 <!doctype html>
 <html lang="pl">
 
