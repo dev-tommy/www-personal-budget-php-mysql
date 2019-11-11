@@ -1,4 +1,6 @@
 <?php
+require_once "connectDB.php";
+
 include_once "./lib/mainLib.php";
 startSessionIfNot();
 
@@ -62,5 +64,64 @@ if (isset($_GET["periodBalance"]))
 $_SESSION["msg"] = $msg1;
 $_SESSION["startdate"] = date("Y-m-d", $startDate);
 $_SESSION["enddate"] = date("Y-m-d", $endDate);
+$_SESSION["totalIncomesAmount"] = 0.00;
 
-?>
+$personaBudgetDB = @new mysqli($host, $db_user, $db_password, $db_name);
+
+if ($personaBudgetDB->connect_errno != 0)
+{
+    echo "Error: " . $personaBudgetDB->connect_errno;
+}
+else
+{
+    $personaBudgetDB->set_charset("utf8");
+
+    $id = $_SESSION['userId'];
+    $startDate = date("Y-m-d", $startDate);
+    $endDate = date("Y-m-d", $endDate);
+
+    $sql = "
+        SELECT
+            i_userid.name AS 'Category',
+            SUM(i.amount) AS 'Sum of amounts'
+        FROM
+            incomes AS i,
+            incomes_category_assigned_to_userid_$id AS i_userid
+        WHERE
+            i_userid.id = i.income_category_assigned_to_user_id AND
+            i.date_of_income >= '$startDate' AND
+            i.date_of_income <= '$endDate' AND
+            i.user_id = '$id'
+        GROUP BY i.income_category_assigned_to_user_id
+        ";
+
+
+    if ($result = @$personaBudgetDB->query( $sql ) )
+    {
+        if ($result->num_rows > 0)
+        {
+            while ($row = $result->fetch_assoc())
+            {
+                echo '
+                <tr>
+                    <th scope="row" class="text-left">'.$row["Category"].'</th>
+                    <td class="text-right">'.$row["Sum of amounts"].'</td>
+                </tr>
+                ';
+
+                $_SESSION["totalIncomesAmount"] += $row["Sum of amounts"];
+            }
+            $result->close();
+       }
+        else
+        {
+            echo "No results <br />";
+        }
+    }
+    else
+    {
+        echo "SQL error";
+    }
+
+    $personaBudgetDB->close();
+}
