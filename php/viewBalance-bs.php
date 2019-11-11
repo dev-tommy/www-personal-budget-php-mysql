@@ -160,7 +160,7 @@ if (!isset($_SESSION['periodBalance'])) {
             </div>
             <div class="row">
                 <div class="col-12 text-center">
-                    <canvas width="800" height="700" id="chartpie">
+                    <canvas width="900" height="700" id="chartpie">
                         Sorry, canvas not supported
                     </canvas>
                 </div>
