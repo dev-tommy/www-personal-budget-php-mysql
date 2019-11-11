@@ -171,6 +171,30 @@ if (!isset($_SESSION['periodBalance'])) {
 
     <?php showFooter() ?>
 
+    <script>
+        function drawChart() {
+            var elements = {
+                'Mieszkanie 46%': 0.457,
+                'Jedzenie 23%': 0.234,
+                'Transport 11%': 0.1142,
+                'Oszczędności 11%': 0.1063,
+                'Ubranie 9%': 0.0884
+            };
+
+            var colors = {
+                'Mieszkanie 46%': 'green',
+                'Jedzenie 23%': 'red',
+                'Transport 11%': 'blue',
+                'Oszczędności 11%': 'gray',
+                'Ubranie 9%': 'pink'
+            };
+
+            var canvas = document.getElementById('chartpie');
+            var chart = chartJS.PieChart(elements, colors, canvas);
+            chart.draw();
+        }
+    </script>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
