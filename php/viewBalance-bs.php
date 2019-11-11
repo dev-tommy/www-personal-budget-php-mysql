@@ -7,7 +7,12 @@ if (!isLoggedIn()) {
     exit();
 }
 
+if (!isset($_SESSION['periodBalance'])) {
+    $_SESSION['periodBalance'] = 'currentMonth';
+}
+
 ?>
+
 <!doctype html>
 <html lang="pl">
 
@@ -100,24 +105,16 @@ if (!isLoggedIn()) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th scope="row" class="text-left">Wynagrodzenie</th>
-                                        <td class="text-right">4200,00</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" class="text-left">Odsetki bankowe</th>
-                                        <td class="text-right">223,37</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" class="text-left">Sprzedaż na Allegro</th>
-                                        <td class="text-right">48,00</td>
-                                    </tr>
+                                    <?php
+                                    include "incomes.php";
+                                    ?>
                                 </tbody>
                                 <tfoot>
                                     <tr class="table-success">
                                         <th scope="row" class="text-left">Razem:</th>
                                         <td id="sum-of-incomes" class="text-right font-weight-bold text-warning bg-dark h4">
-                                            4471,37</td>
+                                            <?php echo $_SESSION["totalIncomesAmount"] ?>
+                                        </td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -136,32 +133,16 @@ if (!isLoggedIn()) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th scope="row" class="text-left">Mieszkanie</th>
-                                        <td class="text-right">620,00</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" class="text-left">Jedzenie</th>
-                                        <td class="text-right">317,48</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" class="text-left">Transport</th>
-                                        <td class="text-right">155,00</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" class="text-left">Oszczędności</th>
-                                        <td class="text-right">144,23</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row" class="text-left">Ubranie</th>
-                                        <td class="text-right">120,00</td>
-                                    </tr>
+                                    <?php
+                                    include "expenses.php";
+                                    ?>
                                 </tbody>
                                 <tfoot>
                                     <tr class="table-success">
                                         <th scope="row" class="text-left">Razem:</th>
                                         <td id="sum-of-expenses" class="text-right font-weight-bold text-warning bg-dark h4">
-                                            1356,71</td>
+                                            <?php echo $_SESSION["totalExpensesAmount"] ?>
+                                        </td>
                                     </tr>
                                 </tfoot>
                             </table>
