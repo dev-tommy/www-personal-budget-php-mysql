@@ -116,7 +116,7 @@ else
        }
         else
         {
-            echo "No results <br />";
+            //echo "No results <br />";
         }
     }
     else
