@@ -70,7 +70,11 @@ $personaBudgetDB = @new mysqli($host, $db_user, $db_password, $db_name);
 
 if ($personaBudgetDB->connect_errno != 0)
 {
-    echo "Error: " . $personaBudgetDB->connect_errno;
+    if ($personaBudgetDB->connect_errno == 2002) {
+        echo "<span class='text-danger p-3'>Chwilowy brak dostępu do danych!<br />:(<br /></span>";
+    } else {
+        echo "Error: " . $personaBudgetDB->connect_errno;
+    }
 }
 else
 {
