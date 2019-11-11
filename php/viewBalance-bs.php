@@ -174,19 +174,13 @@ if (!isset($_SESSION['periodBalance'])) {
     <script>
         function drawChart() {
             var elements = {
-                'Mieszkanie 46%': 0.457,
-                'Jedzenie 23%': 0.234,
-                'Transport 11%': 0.1142,
-                'Oszczędności 11%': 0.1063,
-                'Ubranie 9%': 0.0884
+                <?php echo $_SESSION['chartElements'];
+                $_SESSION['chartElements'] = ''; ?>
             };
 
             var colors = {
-                'Mieszkanie 46%': 'green',
-                'Jedzenie 23%': 'red',
-                'Transport 11%': 'blue',
-                'Oszczędności 11%': 'gray',
-                'Ubranie 9%': 'pink'
+                <?php echo $_SESSION['chartColors'];
+                $_SESSION['chartColors'] = ''; ?>
             };
 
             var canvas = document.getElementById('chartpie');
@@ -194,6 +188,10 @@ if (!isset($_SESSION['periodBalance'])) {
             chart.draw();
         }
     </script>
+
+
+
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

@@ -9,6 +9,11 @@ if (!isLoggedIn()) {
     exit();
 }
 
+function rand_color()
+{
+    return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
+}
+
 $msg1 = "Bilans z okresu:";
 
 if (!isset($_GET["startDate"]))
@@ -66,6 +71,9 @@ $_SESSION["startdate"] = date("Y-m-d", $startDate);
 $_SESSION["enddate"] = date("Y-m-d", $endDate);
 $_SESSION["totalExpensesAmount"] = 0.00;
 
+$_SESSION['chartElements']='';
+$_SESSION['chartColors']='';
+
 $personaBudgetDB = @new mysqli($host, $db_user, $db_password, $db_name);
 
 if ($personaBudgetDB->connect_errno != 0)
@@ -105,6 +113,8 @@ else
     {
         if ($result->num_rows > 0)
         {
+            $chartElements=array();
+            $chartColors= array();
             while ($row = $result->fetch_assoc())
             {
                 echo '
@@ -115,6 +125,16 @@ else
                 ';
 
                 $_SESSION["totalExpensesAmount"] += $row["Sum of amounts"];
+
+                $chartElements[$row["Category"]]= $row["Sum of amounts"];
+            }
+
+            foreach ($chartElements as $key => $value)
+            {
+                $percentage = $value / $_SESSION["totalExpensesAmount"];
+                $_SESSION['chartElements'] .= "'" . $key . "  ".round($percentage * 100)."%' : " . $percentage . ",\n\t\t\t\t";
+
+                $_SESSION['chartColors'] .= "'" . $key . "  " . round($percentage * 100) . "%' : " . "'".rand_color()."'" . ",\n\t\t\t\t";
             }
             $result->close();
        }
