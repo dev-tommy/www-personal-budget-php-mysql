@@ -7,8 +7,31 @@ if (!isLoggedIn()) {
     exit();
 }
 
-if (!isset($_SESSION['periodBalance'])) {
+if (isset($_GET['periodBalance'])) {
+    $_SESSION['periodBalance'] = $_GET['periodBalance'];
+    switch ($_SESSION['periodBalance']) {
+        case 'currentMonth':
+            $msg = "Bilans z bieżącego miesiąca:";
+        break;
+        case 'previousMonth':
+             $msg = "Bilans z poprzedniego miesiąca:";
+        break;
+        case 'currentYear':
+             $msg = "Bilans z bieżącego roku:";
+        break;
+    }
+}
+else {
     $_SESSION['periodBalance'] = 'currentMonth';
+}
+
+
+if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
+    $msg = 'Bilans za okres:<br /> od '. $_GET['startDate']. ' do '. $_GET['endDate'];
+}
+
+if (!isset($msg)) {
+    $msg = 'Bilans z bieżącego miesiąca:';
 }
 
 ?>
@@ -35,7 +58,7 @@ if (!isset($_SESSION['periodBalance'])) {
     <script src="../js/chartjs.js"></script>
 </head>
 
-<body onload="calculateBalance(); drawChart(); setDate('fromDateBalance', 'toDateBalance', 'currentMonth');">
+<body onload="calculateBalance(); drawChart(); setDate('fromDateBalance', 'toDateBalance');">
     <header>
         <nav class="navbar navbar-dark bg-custom navbar-expand-xl fixed-top">
             <a class="navbar-brand" href="../index.php"><img src="../img/logo.png" width="36" height="36" class="d-inline-block mr-1 align-bottom" alt="">
@@ -88,7 +111,7 @@ if (!isset($_SESSION['periodBalance'])) {
             <div class="row">
                 <div class="col-md-10 offset-md-1 text-center ">
                     <div id="periodBalanceCaption" class="card shadow p-2 sentence-period font-italic font-weight-light">
-                        Bilans z bieżącego miesiąca
+                        <?php echo $msg; ?>
                     </div>
                 </div>
             </div>
@@ -209,10 +232,10 @@ if (!isset($_SESSION['periodBalance'])) {
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="button" class="btn btn-primary btn-lg btn-block" data-dismiss="modal" onclick="setDate('fromDateBalance', 'toDateBalance', 'currentMonth')">Bieżący miesiąc</button>
-                    <button type="button" class="btn btn-primary btn-lg btn-block" data-dismiss="modal" onclick="setDate('fromDateBalance', 'toDateBalance', 'previousMonth')">Poprzedni
+                    <button type="button" class="btn btn-primary btn-lg btn-block" data-dismiss="modal" onclick="setPeriod('currentMonth')">Bieżący miesiąc</button>
+                    <button type="button" class="btn btn-primary btn-lg btn-block" data-dismiss="modal" onclick="setPeriod('previousMonth')">Poprzedni
                         miesiąc</button>
-                    <button type="button" class="btn btn-primary btn-lg btn-block" data-dismiss="modal" onclick="setDate('fromDateBalance', 'toDateBalance', 'currentYear')">Bieżący rok</button>
+                    <button type="button" class="btn btn-primary btn-lg btn-block" data-dismiss="modal" onclick="setPeriod('currentYear')">Bieżący rok</button>
                     <div>
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -228,10 +251,10 @@ if (!isset($_SESSION['periodBalance'])) {
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <form class="modal-footer" action="viewBalance-bs.php" method="post">
                     <button type="button" class="btn btn-warning" data-dismiss="modal">Anuluj</button>
-                    <button type="button" class="btn btn-success" data-dismiss="modal" onclick="showBalance('fromDateBalance', 'toDateBalance')">Ustaw</button>
-                </div>
+                    <button type="submit" name="setDates" class="btn btn-success" data-dismiss="modal" onclick="showBalance('fromDateBalance', 'toDateBalance')">Ustaw</button>
+                </form>
             </div>
         </div>
     </div>
