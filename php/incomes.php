@@ -1,7 +1,7 @@
 <?php
 require_once "connectDB.php";
-
 include_once "./lib/mainLib.php";
+
 startSessionIfNot();
 
 if (!isLoggedIn()) {
@@ -9,12 +9,11 @@ if (!isLoggedIn()) {
     exit();
 }
 
-$msg1 = "Bilans z okresu:";
+$_SESSION["totalIncomesAmount"] = 0.00;
 
 if (!isset($_GET["startDate"]))
 {
     $startDate = strtotime(date("Y-m")."-01");
-    $msg1 = "Bilans z bieżącego miesiąca";
 }
 else
 {
@@ -23,6 +22,8 @@ else
     {
         $startDate = strtotime(date("Y-m-d"));
         echo "Data początkowa była późniejsza od dzisiejszej!";
+        return;
+
     }
 }
 
@@ -42,10 +43,9 @@ if ($startDate > $endDate)
     $startDate = $endDate;
 }
 
-if (isset($_GET["periodBalance"]))
+if (isset($_SESSION['periodBalance']))
 {
-    $period = $_GET["periodBalance"];
-    switch ($period)
+    switch ($_SESSION['periodBalance'])
     {
         case "previousMonth":
             $startDate = strtotime(date("Y-m")."-01");
@@ -61,7 +61,6 @@ if (isset($_GET["periodBalance"]))
     }
 }
 
-$_SESSION["msg"] = $msg1;
 $_SESSION["startdate"] = date("Y-m-d", $startDate);
 $_SESSION["enddate"] = date("Y-m-d", $endDate);
 $_SESSION["totalIncomesAmount"] = 0.00;
