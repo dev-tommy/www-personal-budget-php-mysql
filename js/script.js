@@ -38,3 +38,16 @@ function showBalance(fromInputDateId, toInputDateId) {
 }
 
 
+function setPeriod(period) {
+    switch (period) {
+        case 'previousMonth':
+            location.href = "viewBalance-bs.php?periodBalance=previousMonth";
+            break;
+        case 'currentYear':
+            location.href = "viewBalance-bs.php?periodBalance=currentYear";
+            break;
+        default:
+            location.href = "viewBalance-bs.php?periodBalance=currentMonth";
+            break;
+    }
+}
