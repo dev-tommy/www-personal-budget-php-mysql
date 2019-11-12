@@ -14,12 +14,9 @@ function rand_color()
     return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
 }
 
-$msg1 = "Bilans z okresu:";
-
 if (!isset($_GET["startDate"]))
 {
     $startDate = strtotime(date("Y-m")."-01");
-    $msg1 = "Bilans z bieżącego miesiąca";
 }
 else
 {
@@ -56,17 +53,14 @@ if (isset($_GET["periodBalance"]))
             $startDate = strtotime(date("Y-m")."-01");
             $startDate = strtotime("-1 month", $startDate);
             $endDate = strtotime("+1 month, -1 day", $startDate);
-            $msg1 = "Bilans z poprzedniego miesiąca";
             break;
         case "currentYear":
             $startDate = strtotime(date("Y")."-01-01");
             $endDate = strtotime(date("Y-m-d"));
-            $msg1 = "Bilans z bieżącego roku";
             break;
     }
 }
 
-$_SESSION["msg"] = $msg1;
 $_SESSION["startdate"] = date("Y-m-d", $startDate);
 $_SESSION["enddate"] = date("Y-m-d", $endDate);
 $_SESSION["totalExpensesAmount"] = 0.00;
