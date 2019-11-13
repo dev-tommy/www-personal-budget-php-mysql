@@ -1,5 +1,5 @@
 <?php
-require_once "../conf/connectDB.php";
+require_once "../mySqlDb/connectDB.php";
 include_once "../lib/mainLib.php";
 startSessionIfNot();
 
