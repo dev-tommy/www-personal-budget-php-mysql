@@ -1,9 +1,9 @@
 <?php
-include "./lib/mainLib.php";
+include "../lib/mainLib.php";
 startSessionIfNot();
 
 if (!isLoggedIn()) {
-    header('Location: login-bs.php');
+    header('Location: ../templates/login-bs.php');
     exit();
 }
 ?>
@@ -54,7 +54,7 @@ if (!isLoggedIn()) {
                     </li>
                 </ul>
 
-                <form class="form-inline" action="logout.php">
+                <form class="form-inline" action="../php/logout.php">
                     <div class="btn-group">
                         <button class="btn btn-danger btn-sm px-2 my-1" type="submit">
                             <i class="material-icons">exit_to_app</i>
@@ -73,7 +73,7 @@ if (!isLoggedIn()) {
             <div class="row">
                 <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
                     <?php if (!isset($_SESSION['newExpenseAdded']) || ($_SESSION['newExpenseAdded']) == false) : ?>
-                        <form action="addExpense.php" method="POST">
+                        <form action="../php/addExpense.php" method="POST">
                             <div class="card shadow-lg mb-5 bg-white rounded">
                                 <div class="card-header bg-info card-topic text-center"> Dodaj wydatek </div>
                                 <div class="card-body">

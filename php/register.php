@@ -1,5 +1,13 @@
 <?php
-session_start();
+require_once "../conf/connectDB.php";
+include_once "../lib/mainLib.php";
+
+startSessionIfNot();
+
+if (isLoggedIn()) {
+    header('Location: "../templates/addIncome-bs.php"');
+    exit();
+}
 
 if (isset($_POST['nickName']) && isset($_POST['email']) && isset($_POST['password'])  && isset($_POST['confirmPassword']))
 {
@@ -45,7 +53,7 @@ if (isset($_POST['nickName']) && isset($_POST['email']) && isset($_POST['passwor
 
     $hashPwd = password_hash($pwd, PASSWORD_DEFAULT);
 
-    require_once "connectDB.php";
+
     mysqli_report(MYSQLI_REPORT_STRICT);
 
     if ($registerDataCorrect) {
@@ -111,4 +119,4 @@ if (isset($_POST['nickName']) && isset($_POST['email']) && isset($_POST['passwor
 
 }
 
-header('Location: login-bs.php');
+header('Location: ../templates/login-bs.php');

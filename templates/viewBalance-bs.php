@@ -1,9 +1,9 @@
 <?php
-include_once "./lib/mainLib.php";
+include_once "../lib/mainLib.php";
 startSessionIfNot();
 
 if (!isLoggedIn()) {
-    header('Location: login-bs.php');
+    header('Location: ../templates/login-bs.php');
     exit();
 }
 
@@ -33,6 +33,9 @@ if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
 if (!isset($msg)) {
     $msg = 'Bilans z bieżącego miesiąca:';
 }
+
+$_SESSION["totalIncomesAmount"] = 0;
+$_SESSION["totalExpensesAmount"] = 0;
 
 ?>
 
@@ -83,7 +86,7 @@ if (!isset($msg)) {
                     </li>
                 </ul>
 
-                <form class="form-inline" action="logout.php">
+                <form class="form-inline" action="../php/logout.php">
                     <div class="btn-group">
                         <button class="btn btn-primary btn-sm px-2 my-1" data-toggle="modal" data-target="#periodSelectionWindow" type="button">
                             <i class="material-icons">calendar_today</i>
@@ -129,7 +132,7 @@ if (!isset($msg)) {
                                 </thead>
                                 <tbody>
                                     <?php
-                                    include "incomes.php";
+                                    include "../php/incomes.php";
                                     ?>
                                 </tbody>
                                 <tfoot>
@@ -157,7 +160,7 @@ if (!isset($msg)) {
                                 </thead>
                                 <tbody>
                                     <?php
-                                    include "expenses.php";
+                                    include "../php/expenses.php";
                                     ?>
                                 </tbody>
                                 <tfoot>

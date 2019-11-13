@@ -1,9 +1,10 @@
 <?php
-include_once "./lib/mainLib.php";
+require_once "../conf/connectDB.php";
+include_once "../lib/mainLib.php";
 startSessionIfNot();
 
 if (!isLoggedIn()) {
-    header('Location: login-bs.php');
+    header('Location: ../templates/login-bs.php');
     exit();
 }
 
@@ -89,7 +90,6 @@ else
     $comment = null;
 }
 
-require_once "connectDB.php";
 mysqli_report(MYSQLI_REPORT_STRICT);
 $userId = $_SESSION['userId'];
 
@@ -108,7 +108,7 @@ if ($incomeCorrect)
             {
                 echo "Dodano !";
                 $_SESSION['newIncomeAdded'] = true;
-                header('Location: addIncome-bs.php');
+                header('Location: ../templates/addIncome-bs.php');
                 exit();
 
             }
@@ -130,4 +130,4 @@ else
     echo "Nie dodano";
 }
 
-header('Location: addIncome-bs.php');
+header('Location: ../templates/addIncome-bs.php');
