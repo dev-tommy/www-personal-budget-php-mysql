@@ -10,11 +10,6 @@ if (!isLoggedIn()) {
     exit();
 }
 
-function rand_color()
-{
-    return sprintf('#%06X', mt_rand(0, 0xFFFFFF));
-}
-
 if (!isset($_GET["startDate"]))
 {
     $startDate = strtotime(date("Y-m")."-01");
