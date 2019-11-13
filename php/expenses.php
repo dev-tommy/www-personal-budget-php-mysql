@@ -10,56 +10,10 @@ if (!isLoggedIn()) {
     exit();
 }
 
-if (!isset($_GET["startDate"]))
-{
-    $startDate = strtotime(date("Y-m")."-01");
+if (!isset($_SESSION["startDate"]) || !isset($_SESSION["endDate"])) {
+    $_SESSION["startDate"] = strtotime(date("Y-m") . "-01");
+    $_SESSION["endDate"] = strtotime("+1 month, -1 day", $_SESSION["startDate"]);
 }
-else
-{
-    $startDate = strtotime($_GET["startDate"]);
-    if ($startDate > strtotime(date("Y-m-d")))
-    {
-        $startDate = strtotime(date("Y-m-d"));
-        echo "Data początkowa była późniejsza od dzisiejszej!";
-    }
-}
-
-if (!isset($_GET["endDate"])) {
-    $endDate = strtotime(date("Y-m-d"));
-} else {
-    $endDate = strtotime($_GET["endDate"]);
-    if ($endDate > strtotime(date("Y-m-d")))
-    {
-        $endDate = strtotime(date("Y-m-d"));
-        echo "Data początkowa była późniejsza od dzisiejszej!";
-    }
-}
-
-if ($startDate > $endDate)
-{
-    $startDate = $endDate;
-}
-
-if (isset($_GET["periodBalance"]))
-{
-    $period = $_GET["periodBalance"];
-    switch ($period)
-    {
-        case "previousMonth":
-            $startDate = strtotime(date("Y-m")."-01");
-            $startDate = strtotime("-1 month", $startDate);
-            $endDate = strtotime("+1 month, -1 day", $startDate);
-            break;
-        case "currentYear":
-            $startDate = strtotime(date("Y")."-01-01");
-            $endDate = strtotime(date("Y-m-d"));
-            break;
-    }
-}
-
-$_SESSION["startdate"] = date("Y-m-d", $startDate);
-$_SESSION["enddate"] = date("Y-m-d", $endDate);
-$_SESSION["totalExpensesAmount"] = 0.00;
 
 $_SESSION['chartElements']='';
 $_SESSION['chartColors']='';
@@ -76,13 +30,11 @@ if ($personaBudgetDB->connect_errno != 0)
 }
 else
 {
-    /* change character set to utf8 */
-    $personaBudgetDB->set_charset("utf8");
-
     $id = $_SESSION['userId'];
-    $startDate = date("Y-m-d", $startDate);
-    $endDate = date("Y-m-d", $endDate);
+    $startDate = date("Y-m-d",  $_SESSION["startDate"]);
+    $endDate = date("Y-m-d", $_SESSION["endDate"]);
 
+    $personaBudgetDB->set_charset("utf8");
     $sql = getExpenseQuery($id, $startDate, $endDate);
 
     if ($result = @$personaBudgetDB->query( $sql ) )

@@ -26,34 +26,67 @@ function showFooter()
     echo '</footer>';
 }
 
-function getPeriodBalanceMsg($get)
+function setCorrectDates($get)
 {
+    $months = array('styczeń', 'luty', 'marzec', 'kwiecień', 'maj', 'czerwiec', 'lipiec', 'sierpień', 'wrzesień', 'październik', 'listopad', 'grudzień');
+
     if (isset($get['periodBalance'])) {
-        $_SESSION['periodBalance'] = $get['periodBalance'];
-        switch ($_SESSION['periodBalance']) {
+        switch ($get['periodBalance']) {
             case 'currentMonth':
-                $msg = "Bilans z bieżącego miesiąca:";
-                break;
+                $startDate = strtotime(date("Y-m") . "-01");
+                $endDate = $endDate = strtotime("+1 month, -1 day", $startDate);
+                $currentMonthName =  $months[date("m")-1];
+                $msg = 'Bilans z bieżącego miesiąca ['. $currentMonthName.']:';
+            break;
             case 'previousMonth':
-                $msg = "Bilans z poprzedniego miesiąca:";
-                break;
+                $startDate = strtotime(date("Y-m") . "-01");
+                $startDate = strtotime("-1 month", $startDate);
+                $endDate = strtotime("+1 month, -1 day", $startDate);
+                $previousMonthName =  $months[date("m",$startDate)-1];
+                $msg = 'Bilans z poprzedniego miesiąca ['. $previousMonthName.']:';
+            break;
             case 'currentYear':
-                $msg = "Bilans z bieżącego roku:";
-                break;
+                $startDate = strtotime(date("Y") . "-01-01");
+                $endDate = strtotime(date("Y-m-d"));
+                $msg = 'Bilans z bieżącego roku ['. date("Y").']:';
+            break;
         }
-    } else {
-        $_SESSION['periodBalance'] = 'currentMonth';
+    }
+    else
+    {
+        if (isset($get['startDate']) && isset($get['endDate']))
+        {
+            $startDate = strtotime($get["startDate"]);
+            if ($startDate > strtotime(date("Y-m-d"))) {
+                $startDate = strtotime(date("Y-m-d"));
+                echo "Data początkowa była późniejsza od dzisiejszej!";
+                return;
+            }
+
+            $endDate = strtotime($_GET["endDate"]);
+            if ($endDate > strtotime(date("Y-m-d"))) {
+                $endDate = strtotime(date("Y-m-d"));
+                echo "Data początkowa była późniejsza od dzisiejszej!";
+            }
+
+            if ($startDate > $endDate) {
+                $startDate = $endDate;
+            }
+
+            $msg = 'Bilans za okres:<br /> od ' . date("Y-m-d", $startDate) . ' do ' . date("Y-m-d", $endDate);
+        }
+        else
+        {
+            $startDate = strtotime(date("Y-m") . "-01");
+            $endDate = strtotime("+1 month, -1 day", $startDate);
+            $currentMonthName =  $months[date("m") - 1];
+            $msg = 'Bilans z bieżącego miesiąca [' . $currentMonthName . ']:';
+        }
     }
 
-    if (isset($get['startDate']) && isset($get['endDate'])) {
-        $msg = 'Bilans za okres:<br /> od ' . $get['startDate'] . ' do ' . $get['endDate'];
-    }
-
-    if (!isset($msg)) {
-        $msg = 'Bilans z bieżącego miesiąca:';
-    }
-
-    return $msg;
+    $_SESSION["startDate"] =  $startDate;
+    $_SESSION["endDate"] =  $endDate;
+    $_SESSION["periodBalanceMsg"] = $msg;
 }
 
 function rand_color()

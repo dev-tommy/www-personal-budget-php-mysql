@@ -10,61 +10,11 @@ if (!isLoggedIn()) {
     exit();
 }
 
-$_SESSION["totalIncomesAmount"] = 0.00;
-
-if (!isset($_GET["startDate"]))
+if (!isset($_SESSION["startDate"]) || !isset($_SESSION["endDate"]))
 {
-    $startDate = strtotime(date("Y-m")."-01");
+    $_SESSION["startDate"] = strtotime(date("Y-m") . "-01");
+    $_SESSION["endDate"] = strtotime("+1 month, -1 day", $_SESSION["startDate"]);
 }
-else
-{
-    $startDate = strtotime($_GET["startDate"]);
-    if ($startDate > strtotime(date("Y-m-d")))
-    {
-        $startDate = strtotime(date("Y-m-d"));
-        echo "Data początkowa była późniejsza od dzisiejszej!";
-        return;
-
-    }
-}
-
-if (!isset($_GET["endDate"])) {
-    $endDate = strtotime(date("Y-m-d"));
-} else {
-    $endDate = strtotime($_GET["endDate"]);
-    if ($endDate > strtotime(date("Y-m-d")))
-    {
-        $endDate = strtotime(date("Y-m-d"));
-        echo "Data początkowa była późniejsza od dzisiejszej!";
-    }
-}
-
-if ($startDate > $endDate)
-{
-    $startDate = $endDate;
-}
-
-if (isset($_SESSION['periodBalance']))
-{
-    switch ($_SESSION['periodBalance'])
-    {
-        case "previousMonth":
-            $startDate = strtotime(date("Y-m")."-01");
-            $startDate = strtotime("-1 month", $startDate);
-            $endDate = strtotime("+1 month, -1 day", $startDate);
-            $msg1 = "Bilans z poprzedniego miesiąca";
-            break;
-        case "currentYear":
-            $startDate = strtotime(date("Y")."-01-01");
-            $endDate = strtotime(date("Y-m-d"));
-            $msg1 = "Bilans z bieżącego roku";
-            break;
-    }
-}
-
-$_SESSION["startdate"] = date("Y-m-d", $startDate);
-$_SESSION["enddate"] = date("Y-m-d", $endDate);
-$_SESSION["totalIncomesAmount"] = 0.00;
 
 $personaBudgetDB = @new mysqli($host, $db_user, $db_password, $db_name);
 
@@ -78,12 +28,11 @@ if ($personaBudgetDB->connect_errno != 0)
 }
 else
 {
-    $personaBudgetDB->set_charset("utf8");
-
     $id = $_SESSION['userId'];
-    $startDate = date("Y-m-d", $startDate);
-    $endDate = date("Y-m-d", $endDate);
+    $startDate = date("Y-m-d",  $_SESSION["startDate"]);
+    $endDate = date("Y-m-d", $_SESSION["endDate"]);
 
+    $personaBudgetDB->set_charset("utf8");
     $sql = getIncomeQuery($id, $startDate, $endDate);
 
     if ($result = @$personaBudgetDB->query( $sql ) )

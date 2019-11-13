@@ -7,7 +7,7 @@ if (!isLoggedIn()) {
     exit();
 }
 
-$msg = getPeriodBalanceMsg($_GET);
+setCorrectDates($_GET);
 
 $_SESSION["totalIncomesAmount"] = 0;
 $_SESSION["totalExpensesAmount"] = 0;
@@ -89,7 +89,7 @@ $_SESSION["totalExpensesAmount"] = 0;
             <div class="row">
                 <div class="col-md-10 offset-md-1 text-center ">
                     <div id="periodBalanceCaption" class="card shadow p-2 sentence-period font-italic font-weight-light">
-                        <?php echo $msg; ?>
+                        <?php echo $_SESSION["periodBalanceMsg"]; ?>
                     </div>
                 </div>
             </div>
