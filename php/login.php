@@ -7,7 +7,7 @@ if (isLoggedIn()) {
     exit();
 }
 
-require_once "../conf/connectDB.php";
+require_once "../mySqlDb/connectDB.php";
 
 $personaBudgetDB = @new mysqli($host, $db_user, $db_password, $db_name);
 
