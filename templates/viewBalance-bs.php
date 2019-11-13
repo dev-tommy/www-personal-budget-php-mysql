@@ -7,32 +7,7 @@ if (!isLoggedIn()) {
     exit();
 }
 
-if (isset($_GET['periodBalance'])) {
-    $_SESSION['periodBalance'] = $_GET['periodBalance'];
-    switch ($_SESSION['periodBalance']) {
-        case 'currentMonth':
-            $msg = "Bilans z bieżącego miesiąca:";
-        break;
-        case 'previousMonth':
-             $msg = "Bilans z poprzedniego miesiąca:";
-        break;
-        case 'currentYear':
-             $msg = "Bilans z bieżącego roku:";
-        break;
-    }
-}
-else {
-    $_SESSION['periodBalance'] = 'currentMonth';
-}
-
-
-if (isset($_GET['startDate']) && isset($_GET['endDate'])) {
-    $msg = 'Bilans za okres:<br /> od '. $_GET['startDate']. ' do '. $_GET['endDate'];
-}
-
-if (!isset($msg)) {
-    $msg = 'Bilans z bieżącego miesiąca:';
-}
+$msg = getPeriodBalanceMsg($_GET);
 
 $_SESSION["totalIncomesAmount"] = 0;
 $_SESSION["totalExpensesAmount"] = 0;
@@ -254,10 +229,10 @@ $_SESSION["totalExpensesAmount"] = 0;
                         </div>
                     </div>
                 </div>
-                <form class="modal-footer" action="viewBalance-bs.php" method="post">
+                <div class="modal-footer">
                     <button type="button" class="btn btn-warning" data-dismiss="modal">Anuluj</button>
-                    <button type="submit" name="setDates" class="btn btn-success" data-dismiss="modal" onclick="showBalance('fromDateBalance', 'toDateBalance')">Ustaw</button>
-                </form>
+                    <button type="submit" id="setBalanceDates" class="btn btn-success" data-dismiss="modal" onclick="showBalance('fromDateBalance', 'toDateBalance')">Ustaw</button>
+                </div>
             </div>
         </div>
     </div>
