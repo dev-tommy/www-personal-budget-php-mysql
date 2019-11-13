@@ -1,5 +1,6 @@
 <?php
 require_once "../mySqlDb/connectDB.php";
+require_once "../mySqlDb/queries.php";
 include_once "../lib/mainLib.php";
 
 startSessionIfNot();
@@ -83,21 +84,7 @@ else
     $startDate = date("Y-m-d", $startDate);
     $endDate = date("Y-m-d", $endDate);
 
-    $sql = "
-        SELECT
-            i_userid.name AS 'Category',
-            SUM(i.amount) AS 'Sum of amounts'
-        FROM
-            incomes AS i,
-            incomes_category_assigned_to_userid_$id AS i_userid
-        WHERE
-            i_userid.id = i.income_category_assigned_to_user_id AND
-            i.date_of_income >= '$startDate' AND
-            i.date_of_income <= '$endDate' AND
-            i.user_id = '$id'
-        GROUP BY i.income_category_assigned_to_user_id
-        ";
-
+    $sql = getIncomeQuery($id, $startDate, $endDate);
 
     if ($result = @$personaBudgetDB->query( $sql ) )
     {
