@@ -181,7 +181,7 @@ if (!isLoggedIn()) {
                             </div>
 
                             <div class="card-footer bg-info text-white ">
-                                <form action="addIncome-bs.php">
+                                <form action="addExpense-bs.php">
                                     <div class="col-md-12 text-center">
                                         <div class="btn-group">
                                             <button class="btn btn-success btn-sm px-2" type="submit">
