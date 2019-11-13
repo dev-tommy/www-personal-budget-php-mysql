@@ -1,5 +1,6 @@
 <?php
 require_once "../mySqlDb/connectDB.php";
+require_once "../mySqlDb/queries.php";
 include_once "../lib/mainLib.php";
 
 startSessionIfNot();
@@ -87,21 +88,7 @@ else
     $startDate = date("Y-m-d", $startDate);
     $endDate = date("Y-m-d", $endDate);
 
-    $sql = "
-        SELECT
-            e_userid.name AS 'Category',
-            SUM(e.amount) AS 'Sum of amounts'
-        FROM
-            expenses AS e,
-            expenses_category_assigned_to_userid_$id AS e_userid
-        WHERE
-            e_userid.id = e.expense_category_assigned_to_user_id AND
-            e.date_of_expense >= '$startDate' AND
-            e.date_of_expense <= '$endDate' AND
-            e.user_id = '$id'
-        GROUP BY e.expense_category_assigned_to_user_id
-        ";
-
+    $sql = getExpenseQuery($id, $startDate, $endDate);
 
     if ($result = @$personaBudgetDB->query( $sql ) )
     {
