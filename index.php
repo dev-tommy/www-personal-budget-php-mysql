@@ -1,3 +1,3 @@
 <?php
-   header('Location: php/login-bs.php');
+   header('Location: /templates/login-bs.php');
 ?>

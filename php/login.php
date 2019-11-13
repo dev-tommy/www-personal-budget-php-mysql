@@ -1,13 +1,13 @@
 <?php
-include "./lib/mainLib.php";
+include_once "../lib/mainLib.php";
 startSessionIfNot();
 
 if (isLoggedIn()) {
-    header('Location: addIncome-bs.php');
+    header('Location: "../templates/addIncome-bs.php"');
     exit();
 }
 
-require_once "connectDB.php";
+require_once "../conf/connectDB.php";
 
 $personaBudgetDB = @new mysqli($host, $db_user, $db_password, $db_name);
 
@@ -38,7 +38,7 @@ else
                 $_SESSION['user'] = $row['username'];
                 $_SESSION['email'] = $row['email'];
                 unset($_SESSION['incorrectLogin']);
-                header('Location: addIncome-bs.php');
+                header('Location: ../templates/addIncome-bs.php');
             }
             else
             {

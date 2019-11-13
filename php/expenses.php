@@ -1,11 +1,11 @@
 <?php
-require_once "connectDB.php";
-include_once "./lib/mainLib.php";
+require_once "../conf/connectDB.php";
+include_once "../lib/mainLib.php";
 
 startSessionIfNot();
 
 if (!isLoggedIn()) {
-    header('Location: login-bs.php');
+    header('Location: ../templates/login-bs.php');
     exit();
 }
 

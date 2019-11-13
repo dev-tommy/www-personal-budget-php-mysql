@@ -1,5 +1,5 @@
 <?php
-include "./lib/mainLib.php";
+include "../lib/mainLib.php";
 startSessionIfNot();
 
 if (isLoggedIn()) {
@@ -62,7 +62,7 @@ if (isLoggedIn()) {
                     </li>
                 </ul>
 
-                <form class="form-inline" action="login.php" method="POST">
+                <form class="form-inline" action="../php/login.php" method="POST">
                     <?php
                     if (isset($_SESSION['incorrectLogin'])) {
                         echo '<input style="border-width:3px;" class="form-control border-danger mr-1 my-1" name="login" type="text" placeholder="błędny login" required>';
@@ -91,7 +91,7 @@ if (isLoggedIn()) {
                 <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
                     <?php if (!isset($_SESSION['newUserRegistered']) || ($_SESSION['newUserRegistered']) == false) : ?>
 
-                        <form action="register.php" method="POST">
+                        <form action="../php/register.php" method="POST">
                             <div class="card shadow-lg mb-5 bg-white rounded">
                                 <div class="card-header bg-info card-topic text-center"> Rejestracja </div>
                                 <div class="card-body">

@@ -1,8 +1,10 @@
 <?php
-session_start();
+require_once "../conf/connectDB.php";
+include_once "../lib/mainLib.php";
+startSessionIfNot();
 
-if (!isset($_SESSION['logged']) || !$_SESSION['logged'] == true) {
-    header('Location: login-bs.php');
+if (!isLoggedIn()) {
+    header('Location: ../templates/login-bs.php');
     exit();
 }
 
@@ -104,7 +106,6 @@ else
     $comment = null;
 }
 
-require_once "connectDB.php";
 mysqli_report(MYSQLI_REPORT_STRICT);
 $userId = $_SESSION['userId'];
 
@@ -123,7 +124,7 @@ if ($expenseCorrect)
             {
                 echo "Dodano !";
                 $_SESSION['newExpenseAdded'] = true;
-                header('Location: addExpense-bs.php');
+                header('Location: ../templates/addExpense-bs.php');
                 exit();
             }
             else
@@ -144,6 +145,6 @@ else
     echo "Nie dodano";
 }
 
-header('Location: addExpense-bs.php');
+header('Location: ../templates/addExpense-bs.php');
 
 ?>
