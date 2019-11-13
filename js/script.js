@@ -25,12 +25,12 @@ function calculateBalance() {
 function setDate(fromInputDateId, toInputDateId) {
     document.getElementById(fromInputDateId).value = new Date().toISOString().substring(0, 10);
     document.getElementById(toInputDateId).value = new Date().toISOString().substring(0, 10);
-    document.getElementById('setBalanceDates').disabled = true;
+    document.getElementById("setBalanceDates").disabled = true;
 }
 
 
 function enableButton() {
-    document.getElementById('setBalanceDates').disabled = false;
+    document.getElementById("setBalanceDates").disabled = false;
 }
 
 function showBalance(fromInputDateId, toInputDateId) {
